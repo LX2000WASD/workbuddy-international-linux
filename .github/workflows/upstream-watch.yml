@@ -1,0 +1,37 @@
+name: upstream-watch
+on:
+  schedule:
+    - cron: '17 3 * * *'   # daily
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check upstream update feed
+        id: check
+        run: |
+          chmod +x check-upstream.sh
+          if ./check-upstream.sh > report.txt; then
+            echo "uptodate=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "uptodate=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat report.txt
+      - name: Open an issue when a new upstream version appears
+        if: steps.check.outputs.uptodate == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Upstream update available: $(sed -n 's/^upstream: //p' report.txt)"
+          # avoid duplicates: skip if an open issue with the same title exists
+          if gh issue list --state open --search "$title" --json title --jq '.[].title' | grep -qx "$title"; then
+            echo "issue already open"
+            exit 0
+          fi
+          gh issue create --title "$title" --body-file report.txt \
+            --label "upstream-update" || gh issue create --title "$title" --body-file report.txt
