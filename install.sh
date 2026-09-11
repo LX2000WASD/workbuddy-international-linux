@@ -13,11 +13,11 @@ ARCH="$(uname -m)"
 PROVIDED_INPUT=""
 FRESH=0
 
-. "$SCRIPT_DIR/scripts/lib/common.sh"
-. "$SCRIPT_DIR/scripts/lib/dmg.sh"
-. "$SCRIPT_DIR/scripts/lib/electron.sh"
-. "$SCRIPT_DIR/scripts/lib/native-modules.sh"
-. "$SCRIPT_DIR/scripts/lib/linux-patches.sh"
+. "$SCRIPT_DIR/lib-common.sh"
+. "$SCRIPT_DIR/lib-dmg.sh"
+. "$SCRIPT_DIR/lib-electron.sh"
+. "$SCRIPT_DIR/lib-native-modules.sh"
+. "$SCRIPT_DIR/lib-linux-patches.sh"
 
 usage() {
     cat <<'HELP'

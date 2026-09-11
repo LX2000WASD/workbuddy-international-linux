@@ -62,7 +62,7 @@ apply_linux_runtime_patches() {
     fi
 
     NODE_PATH="$asar_tool_dir/node_modules" \
-        node "$SCRIPT_DIR/scripts/lib/apply-linux-patches.js" \
+        node "$SCRIPT_DIR/lib-apply-linux-patches.js" \
              "$asar_path" \
              "$LINUX_PATCHES_SHIM_MARKER" \
         || {

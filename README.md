@@ -28,16 +28,18 @@ full cross-platform core and only needs its platform binaries swapped:
    product-config env issue and the tray-menu issue are fixed upstream, and
    the built-in Linux updater degrades gracefully to "no update channel").
 
-The conversion toolchain (`install.sh`, `scripts/`) is vendored from the
+The conversion toolchain (`install.sh`, `lib-*`) is vendored from the
 MIT-licensed community project
 [workbuddy-linux](https://github.com/JipZeonGit/workbuddy-linux)
 (see `LICENSE.port-tool`), with adaptations:
 
-- `scripts/lib/electron.sh`: honor a pre-seeded runtime zip via
+- `lib-electron.sh`: honor a pre-seeded runtime zip via
   `WORKBUDDY_ELECTRON_ZIP` (lets PKGBUILD keep all downloads in `source[]`).
-- `scripts/lib/apply-linux-patches.js`: every patch is now optional — missing
+- `lib-apply-linux-patches.js`: every patch is now optional — missing
   anchors only warn instead of aborting, and the E2BIG env shim is prepended
   only when the `ACC_PRODUCT_CONFIG_V*` mechanism is actually present.
+- Files are kept flat (`lib-*.sh`, `lib-*.js`) because AUR package
+  repositories may not contain subdirectories.
 
 ## Build & install
 
